@@ -1,5 +1,4 @@
-# Lab02 - Robótica Industrial - Analisis y Operaci´on del
-Manipulador Motoman MH6.
+# Lab02 - Robótica Industrial - Analisis y Operación del Manipulador Motoman MH6.
 <p align="center">
   <img src="./media/WhatsApp%20Image%202026-05-22%20at%206.32.42%20PM (3).jpeg" alt="Motoman" width="60%">
 </p>
