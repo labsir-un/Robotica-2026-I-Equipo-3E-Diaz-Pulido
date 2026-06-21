@@ -263,56 +263,62 @@ Para el desarrollo del laboratorio, la universidad suministró un módulo comerc
 
 
 
+## 9. Diagrama de Flujo: Rutina de Movimiento con Patrón de Caballo de Ajedrez
+
 ```mermaid
 flowchart TD
-    classDef inicio Fin fill:#1A659E,stroke:#001B2E,stroke-width:2px,color:#FFF;
-    classDef proceso fill:#F7F9FA,stroke:#004E89,stroke-width:1.5px,color:#000;
-    classDef decision fill:#E0FBFC,stroke:#004E89,stroke-width:1.5px,color:#000;
-    classDef io fill:#FFF3CD,stroke:#D39E00,stroke-width:1.5px,color:#000;
+    classDef clsInicio fill:#1A659E,stroke:#001B2E,stroke-width:2px,color:#FFF;
+    classDef clsProceso fill:#F7F9FA,stroke:#004E89,stroke-width:1.5px,color:#000;
+    classDef clsDecision fill:#E0FBFC,stroke:#004E89,stroke-width:1.5px,color:#000;
+    classDef clsIO fill:#FFF3CD,stroke:#D39E00,stroke-width:1.5px,color:#000;
 
-    Start([Inicio: Function main]) :::inicio
-    InitSys[Motor On<br/>Power High<br/>Speed 100<br/>Accel 100] :::proceso
-    GoHome1[Home] :::proceso
+    Start([Inicio: Function main]) :::clsInicio
+    InitSys[Motor On<br/>Power High<br/>Speed 100<br/>Accel 100, 100<br/>Home] :::clsProceso
+    CallPaletizado[Call Paletizado_01] :::clsProceso
     
-    SubPallet[Pallet 1, Origen, PuntoX, PuntoY, 6, 5] :::proceso
-    LoadRoutes[Call CargarRutas] :::proceso
-    ClearVars[vis(1..30) = 0<br/>vCount = 0] :::proceso
-    InitPos[curA = pA 1<br/>curB = pB 1] :::proceso
-    MarkInit[Call MarcarVis curA<br/>Call MarcarVis curB] :::proceso
-    LoopStart{For k = 2 To 32} :::decision
+    SubPallet[Pallet 1, Origen, PuntoX, PuntoY, 6, 5] :::clsProceso
+    LoadRoutes[Call CargarRutas] :::clsProceso
+    ClearVars[For i = 1 To 30<br/>visited i = 0<br/>Next<br/>visitedCount = 0] :::clsProceso
+    InitPos[curA = pathA 1<br/>curB = pathB 1] :::clsProceso
+    MarkInit[Call MarcarVisitado curA<br/>Call MarcarVisitado curB] :::clsProceso
+    LoopStart{For k = 2 To 30} :::clsDecision
     
-    H1_Pick[Jump Pallet 1, curA] :::proceso
-    H1_On[On Out_9<br/>Wait 0.10] :::io
-    H1_Place[Jump Pallet 1, pA k] :::proceso
-    H1_Off[Off Out_9<br/>Wait 0.10] :::io
-    H1_Update[curA = pA k<br/>Call MarcarVis curA] :::proceso
+    H1_Mark[Call MarcarVisitado curA] :::clsProceso
+    H1_Pick[Jump Pallet 1, curA] :::clsProceso
+    H1_On[On Out_9<br/>Wait 0.10] :::clsIO
+    H1_Place[Jump Pallet 1, pathA k] :::clsProceso
+    H1_Off[Off Out_9<br/>Wait 0.10] :::clsIO
+    H1_Update[curA = pathA k] :::clsProceso
     
-    H2_Pick[Jump Pallet 1, curB] :::proceso
-    H2_On[On Out_9<br/>Wait 0.10] :::io
-    H2_Place[Jump Pallet 1, pB k] :::proceso
-    H2_Off[Off Out_9<br/>Wait 0.10] :::io
-    H2_Update[curB = pB k<br/>Call MarcarVis curB] :::proceso
+    H2_Mark[Call MarcarVisitado curB] :::clsProceso
+    H2_Pick[Jump Pallet 1, curB] :::clsProceso
+    H2_On[On Out_9<br/>Wait 0.10] :::clsIO
+    H2_Place[Jump Pallet 1, pathB k] :::clsProceso
+    H2_Off[Off Out_9<br/>Wait 0.10] :::clsIO
+    H2_Update[curB = pathB k] :::clsProceso
     
-    SafeStop[Off Out_9] :::io
-    GoHome2[Jump Origen<br/>Home] :::proceso
-    EndNode([Fin del Programa]) :::inicio
+    SafeStop[Off Out_9] :::clsIO
+    GoHome2[Jump Origen<br/>Home] :::clsProceso
+    EndNode([Fin del Programa]) :::clsInicio
 
     Start --> InitSys
-    InitSys --> GoHome1
-    GoHome1 --> SubPallet
+    InitSys --> CallPaletizado
+    CallPaletizado --> SubPallet
     SubPallet --> LoadRoutes
     LoadRoutes --> ClearVars
     ClearVars --> InitPos
     InitPos --> MarkInit
     MarkInit --> LoopStart
     
-    LoopStart -- "k <= 32" --> H1_Pick
+    LoopStart -- "k <= 30" --> H1_Mark
+    H1_Mark --> H1_Pick
     H1_Pick --> H1_On
     H1_On --> H1_Place
     H1_Place --> H1_Off
     H1_Off --> H1_Update
     
-    H1_Update --> H2_Pick
+    H1_Update --> H2_Mark
+    H2_Mark --> H2_Pick
     H2_Pick --> H2_On
     H2_On --> H2_Place
     H2_Place --> H2_Off
@@ -320,7 +326,7 @@ flowchart TD
     
     H2_Update --> LoopStart
     
-    LoopStart -- "k > 32" --> SafeStop
+    LoopStart -- "k > 30" --> SafeStop
     SafeStop --> GoHome2
     GoHome2 --> EndNode
 ```
