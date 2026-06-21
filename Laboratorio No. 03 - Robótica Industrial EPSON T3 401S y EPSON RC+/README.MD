@@ -27,7 +27,7 @@
 
 ---
 
-## 1. Cuadro Comparativo Técnico: Motoman MH6 vs. ABB IRB140 vs. EPSON T3-401S
+## Cuadro Comparativo Técnico: Motoman MH6 vs. ABB IRB140 vs. EPSON T3-401S
 
 
 
@@ -59,7 +59,7 @@
 3. **Carga Útil vs. Repetibilidad (*Trade-off*):** Existe una relación inversa entre la capacidad de carga y la precisión. El robot EPSON, al ser un equipo ligero ($16\text{ kg}$) con capacidad para $3\text{ kg}$, alcanza una alta precisión con una repetibilidad de $\pm0.02\text{ mm}$. Sin embargo, los brazos articulados de ABB y Motoman, estructurados con eslabones pesados para soportar hasta $6\text{ kg}$, ven reducida su repetibilidad a $\pm0.03\text{ mm}$ y $\pm0.08\text{ mm}$ respectivamente.
 
 
-## 2. Descripción de las Configuraciones Home del EPSON T3-401S
+## Descripción de las Configuraciones Home del EPSON T3-401S
 
 En la robótica industrial, la posición **Home** (o posición de origen) es el estado de referencia espacial y articular fundamental desde el cual el manipulador inicia sus tareas programadas, ejecuta rutinas de calibración o se ubica en un estado seguro de reposo al finalizar una operación. Para el robot SCARA **EPSON T3-401S**, la gestión y el comportamiento de esta configuración se dividen en dos conceptos clave:
 
@@ -101,7 +101,7 @@ A diferencia de los robots que requieren una rutina activa de búsqueda de topes
 * **Retención de Posición:** El sistema almacena la posición exacta de cada articulación de forma magnética/mecánica incluso cuando el controlador está completamente desenergizado.
 * **Comportamiento al Iniciar:** Al encender el controlador y activar los motores con el comando `Motor On`, el software lee instantáneamente la posición actual sin necesidad de mover los ejes para calibrar el cero. No obstante, se establece como buena práctica de ingeniería programar una rutina de aproximación inicial lenta hacia el punto `Home` de usuario al arrancar el modo automático, asegurando que el TCP inicie desde una zona libre de obstáculos en la trayectoria de paletizado de la cubeta de huevos.
 
-## 3. Inicialización del Sistema y Entorno EPSON RC+
+## Inicialización del Sistema y Entorno EPSON RC+
 
 
 
@@ -131,7 +131,7 @@ Para garantizar un enlace síncrono y evitar fallos de comunicación, se debe se
 </p>
 
 
-## 4. Procedimiento de Movimiento Manual del EPSON T3-401S
+## Procedimiento de Movimiento Manual del EPSON T3-401S
 
 Permite desplazar el manipulador de forma controlada utilizando el panel interactivo **Robot Manager** en EPSON RC+ 7.0. Se usa para el ajuste fino de trayectorias, el registro de coordenadas (*Teaching*) y la aproximación segura a los puntos de la cubeta de huevos.
 
@@ -193,7 +193,7 @@ Aunque el *Jogging* es un proceso manual visual, el entorno de comandos o el có
     * *Sintaxis:* `Accel 20, 20` (Establece el 20% de la aceleración y desaceleración máximas).
 
 
-## 6. Funcionalidades Principales de EPSON RC+ 7.0 y Arquitectura de Comunicación
+## Funcionalidades Principales de EPSON RC+ 7.0 y Arquitectura de Comunicación
 
 El entorno **EPSON RC+ 7.0** es una plataforma de automatización integrada que unifica la programación, simulación, control de periféricos y diagnóstico del robot SCARA.
 
@@ -217,7 +217,7 @@ El controlador integrado de la serie T gestiona la transferencia de datos e inst
     * **Señales Digitales de Hardware:** Conectores físicos discretos integrados en la base del robot operados bajo lógica PNP/NPN para la activación de electroválvulas neumáticas.
     * **Conectividad Industrial (Opcional):** Soporte nativo para protocolos como EtherNet/IP, Modbus TCP y Profibus, facilitando la sincronización de la celda con PLCs maestros o sensores avanzados.
 
-## 7. Análisis Comparativo de Software: EPSON RC+ vs. RoboDK vs. RobotStudio
+## Análisis Comparativo de Software: EPSON RC+ vs. RoboDK vs. RobotStudio
 
 
 | Característica / Parámetro | EPSON RC+ 7.0 | RoboDK | RobotStudio |
@@ -233,7 +233,7 @@ El controlador integrado de la serie T gestiona la transferencia de datos e inst
 
 
 
-## 8. Diseño Técnico e Integración del Gripper Neumático por Vacío
+## Diseño Técnico e Integración del Gripper Neumático por Vacío
 
 La manipulación y el paletizado seguro de objetos frágiles como huevos requiere un sistema de sujeción que distribuya la presión uniformemente. Para este laboratorio, se integró un efector final basado en tecnología de vacío por eyección neumática.
 
@@ -257,7 +257,7 @@ Para el desarrollo del laboratorio, la universidad suministró un módulo comerc
 
 
 
-## 9. Diagrama de Flujo: Rutina de Movimiento con Patrón de Caballo de Ajedrez
+## Diagrama de Flujo: Rutina de Movimiento con Patrón de Caballo de Ajedrez
 
 ```mermaid
 flowchart TD
@@ -326,7 +326,7 @@ flowchart TD
 ```
 
 
-## 10. Plano de Planta: Distribución de la Celda y Posiciones de la Cubeta
+## Plano de Planta: Distribución de la Celda y Posiciones de la Cubeta
 
 
 Para comprender la sincronización y la evasión de colisiones en el espacio de trabajo, esta sección ilustra la distribución espacial de los 32 movimientos ejecutados de forma síncrona por el robot para ambos cuerpos sobre la topología de la cubeta ($6 \times 5$).
@@ -354,7 +354,7 @@ Cada casilla de la cubeta contiene su identificador físico (`01` a `30`) acompa
 
 
 
-## 11. Análisis de Resultados y Discusión Técnica
+## Análisis de Resultados y Discusión Técnica
 
 * El comando nativo `Jump` demostró ser la estrategia de interpolación espacial más eficiente para esta aplicación, logrando un tiempo de ciclo estimado de 0.32 segundos por cada acción de *pick-and-place* al unificar los movimientos horizontales y verticales en arcos parabólicos continuos y eliminar los tiempos muertos de desaceleración intermedios.
 * Aunque la simulación en el entorno de desarrollo tolera perfiles de velocidad y aceleración al 100%, para una operación real con objetos frágiles como huevos se determinó que los parámetros cinemáticos deben limitarse a `Speed 60` y `Accel 50, 50` con el fin de mitigar fuerzas de inercia y vibraciones que comprometan la hermeticidad del agarre.
@@ -363,13 +363,13 @@ Cada casilla de la cubeta contiene su identificador físico (`01` a `30`) acompa
 * La inclusión de retardos por software de `Wait 0.10` posterior a cada conmutación de la salida digital `Out_9` resultó crítica para equilibrar el comportamiento físico y la compresibilidad del aire dentro del eyector Venturi Festo, evitando fallos operacionales o caídas prematuras del objeto antes de iniciar el arco de subida.
 * A pesar de que la simulación en el entorno virtual de EPSON RC+ 7.5.2 fue completamente satisfactoria y exitosa en todas las trayectorias cargadas, no fue posible realizar la implementación y pruebas en el brazo robótico real debido a un daño técnico imprevisto del equipo del laboratorio.
 
-## 12. Código Fuente
+## Código Fuente
 **Código aquí:** [`Main.prg`](./Main.prg)
 
-## 13. Video simulación
+## Video simulación
 [Link de la simulación](https://drive.google.com/file/d/1GVtGdpPDQUnC_12v2RCDD1Qm8kQPoECs/view?usp=sharing)
 
-## 14. Conclusiones
+## Conclusiones
 
 * El uso del comando `Jump` optimiza significativamente el tiempo de ciclo en tareas de *pick-and-place* planar en comparación con trayectorias lineales coordinadas, al unificar los movimientos horizontales y verticales en una única trayectoria parabólica continua.
 * La programación estructurada mediante matrices locales (`Pallet`) simplifica el control cinemático de celdas de paletizado, permitiendo indexar múltiples posiciones espaciales de forma automática a partir de solo tres puntos de referencia geométricos.
