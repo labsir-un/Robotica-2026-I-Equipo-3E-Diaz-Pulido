@@ -267,68 +267,78 @@ Para el desarrollo del laboratorio, la universidad suministró un módulo comerc
 
 ```mermaid
 flowchart TD
-    classDef clsInicio fill:#1A659E,stroke:#001B2E,stroke-width:2px,color:#FFF;
-    classDef clsProceso fill:#F7F9FA,stroke:#004E89,stroke-width:1.5px,color:#000;
-    classDef clsDecision fill:#E0FBFC,stroke:#004E89,stroke-width:1.5px,color:#000;
-    classDef clsIO fill:#FFF3CD,stroke:#D39E00,stroke-width:1.5px,color:#000;
 
-    Start([Inicio: Function main]) :::clsInicio
-    InitSys[Motor On<br/>Power High<br/>Speed 100<br/>Accel 100, 100<br/>Home] :::clsProceso
-    CallPaletizado[Call Paletizado_01] :::clsProceso
-    
-    SubPallet[Pallet 1, Origen, PuntoX, PuntoY, 6, 5] :::clsProceso
-    LoadRoutes[Call CargarRutas] :::clsProceso
-    ClearVars[For i = 1 To 30<br/>visited i = 0<br/>Next<br/>visitedCount = 0] :::clsProceso
-    InitPos[curA = pathA 1<br/>curB = pathB 1] :::clsProceso
-    MarkInit[Call MarcarVisitado curA<br/>Call MarcarVisitado curB] :::clsProceso
-    LoopStart{For k = 2 To 30} :::clsDecision
-    
-    H1_Mark[Call MarcarVisitado curA] :::clsProceso
-    H1_Pick[Jump Pallet 1, curA] :::clsProceso
-    H1_On[On Out_9<br/>Wait 0.10] :::clsIO
-    H1_Place[Jump Pallet 1, pathA k] :::clsProceso
-    H1_Off[Off Out_9<br/>Wait 0.10] :::clsIO
-    H1_Update[curA = pathA k] :::clsProceso
-    
-    H2_Mark[Call MarcarVisitado curB] :::clsProceso
-    H2_Pick[Jump Pallet 1, curB] :::clsProceso
-    H2_On[On Out_9<br/>Wait 0.10] :::clsIO
-    H2_Place[Jump Pallet 1, pathB k] :::clsProceso
-    H2_Off[Off Out_9<br/>Wait 0.10] :::clsIO
-    H2_Update[curB = pathB k] :::clsProceso
-    
-    SafeStop[Off Out_9] :::clsIO
-    GoHome2[Jump Origen<br/>Home] :::clsProceso
-    EndNode([Fin del Programa]) :::clsInicio
+    A[Inicio del programa] --> B[Esperar 0.1 segundos]
 
-    Start --> InitSys
-    InitSys --> CallPaletizado
-    CallPaletizado --> SubPallet
-    SubPallet --> LoadRoutes
-    LoadRoutes --> ClearVars
-    ClearVars --> InitPos
-    InitPos --> MarkInit
-    MarkInit --> LoopStart
-    
-    LoopStart -- "k <= 30" --> H1_Mark
-    H1_Mark --> H1_Pick
-    H1_Pick --> H1_On
-    H1_On --> H1_Place
-    H1_Place --> H1_Off
-    H1_Off --> H1_Update
-    
-    H1_Update --> H2_Mark
-    H2_Mark --> H2_Pick
-    H2_Pick --> H2_On
-    H2_On --> H2_Place
-    H2_Place --> H2_Off
-    H2_Off --> H2_Update
-    
-    H2_Update --> LoopStart
-    
-    LoopStart -- "k > 30" --> SafeStop
-    SafeStop --> GoHome2
-    GoHome2 --> EndNode
+    B --> C[Encender motores]
+    C --> D[Configurar potencia alta]
+
+    D --> E[Configurar aceleración]
+    E --> F[Configurar velocidad]
+
+    F --> G[Enviar robot a Home]
+
+    G --> H[Configurar pallet 6x5]
+
+    H --> I[Llamar función Paletizado_01]
+
+    I --> J[Configurar pallet]
+
+    J --> K[Llamar función CargarRutas]
+
+    K --> L[Inicializar arreglo visited en 0]
+
+    L --> M[visitedCount = 0]
+
+    M --> N[Asignar posiciones iniciales]
+    N --> O[curA = pathA(1)]
+    O --> P[curB = pathB(1)]
+
+    P --> Q[Marcar curA como visitado]
+    Q --> R[Marcar curB como visitado]
+
+    R --> S[Iniciar ciclo k = 2 hasta 30]
+
+    S --> T[Movimiento del primer huevo]
+
+    T --> U[Marcar curA como visitado]
+    U --> V[Jump a posición curA]
+
+    V --> W[Activar Out_9]
+    W --> X[Esperar 0.10 s]
+
+    X --> Y[Jump a pathA(k)]
+
+    Y --> Z[Desactivar Out_9]
+    Z --> AA[Esperar 0.10 s]
+
+    AA --> AB[Actualizar curA = pathA(k)]
+
+    AB --> AC[Movimiento del segundo huevo]
+
+    AC --> AD[Marcar curB como visitado]
+    AD --> AE[Jump a posición curB]
+
+    AE --> AF[Activar Out_9]
+    AF --> AG[Esperar 0.10 s]
+
+    AG --> AH[Jump a pathB(k)]
+
+    AH --> AI[Desactivar Out_9]
+    AI --> AJ[Esperar 0.10 s]
+
+    AJ --> AK[Actualizar curB = pathB(k)]
+
+    AK --> AL{¿k < 30?}
+
+    AL -- Sí --> S
+    AL -- No --> AM[Desactivar Out_9]
+
+    AM --> AN[Jump a Origen]
+
+    AN --> AO[Enviar robot a Home]
+
+    AO --> AP[Fin del programa]
 ```
 
 
