@@ -205,7 +205,7 @@ El entorno **EPSON RC+ 7.0** es una plataforma de automatización integrada que 
 * **Herramientas de Monitoreo (I/O Monitor):** Panel dinámico para la visualización, forzado y mapeo de señales digitales (entradas y salidas) asociadas al gripper de vacío.
 
 <p align="center">
-  <img src="media\captura4.png" width="500">
+  <img src="media\captura4.png" width="1000">
 </p>
 
 ### Arquitectura de Comunicación
