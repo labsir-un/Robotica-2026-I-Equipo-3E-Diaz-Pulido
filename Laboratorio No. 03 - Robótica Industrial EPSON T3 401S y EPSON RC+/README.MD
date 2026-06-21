@@ -167,7 +167,7 @@ A la derecha, se pueden ver las coordenadas en tiempo real, la cualservirá para
   <img src="media\captura3.png" width="500">
 </p>
 
-## 5. Gestión y Configuración de Niveles de Velocidad Manual
+## Gestión y Configuración de Niveles de Velocidad Manual
 
 
 
