@@ -261,39 +261,36 @@ Para el desarrollo del laboratorio, la universidad suministró un módulo comerc
 
 ```mermaid
 flowchart TD
-    classDef clsInicio fill:#1A659E,stroke:#001B2E,stroke-width:2px,color:#FFF;
-    classDef clsProceso fill:#F7F9FA,stroke:#004E89,stroke-width:1.5px,color:#000;
-    classDef clsDecision fill:#E0FBFC,stroke:#004E89,stroke-width:1.5px,color:#000;
-    classDef clsIO fill:#FFF3CD,stroke:#D39E00,stroke-width:1.5px,color:#000;
 
-    Start([Inicio: Function main]) :::clsInicio
-    InitSys[Motor On<br/>Power High<br/>Speed 100<br/>Accel 100, 100<br/>Home] :::clsProceso
-    CallPaletizado[Call Paletizado_01] :::clsProceso
-    
-    SubPallet[Pallet 1, Origen, PuntoX, PuntoY, 6, 5] :::clsProceso
-    LoadRoutes[Call CargarRutas] :::clsProceso
-    ClearVars[For i = 1 To 30<br/>visited i = 0<br/>Next<br/>visitedCount = 0] :::clsProceso
-    InitPos[curA = pathA 1<br/>curB = pathB 1] :::clsProceso
-    MarkInit[Call MarcarVisitado curA<br/>Call MarcarVisitado curB] :::clsProceso
-    LoopStart{For k = 2 To 30} :::clsDecision
-    
-    H1_Mark[Call MarcarVisitado curA] :::clsProceso
-    H1_Pick[Jump Pallet 1, curA] :::clsProceso
-    H1_On[On Out_9<br/>Wait 0.10] :::clsIO
-    H1_Place[Jump Pallet 1, pathA k] :::clsProceso
-    H1_Off[Off Out_9<br/>Wait 0.10] :::clsIO
-    H1_Update[curA = pathA k] :::clsProceso
-    
-    H2_Mark[Call MarcarVisitado curB] :::clsProceso
-    H2_Pick[Jump Pallet 1, curB] :::clsProceso
-    H2_On[On Out_9<br/>Wait 0.10] :::clsIO
-    H2_Place[Jump Pallet 1, pathB k] :::clsProceso
-    H2_Off[Off Out_9<br/>Wait 0.10] :::clsIO
-    H2_Update[curB = pathB k] :::clsProceso
-    
-    SafeStop[Off Out_9] :::clsIO
-    GoHome2[Jump Origen<br/>Home] :::clsProceso
-    EndNode([Fin del Programa]) :::clsInicio
+    Start([Inicio Function main]):::inicio
+    InitSys[Motor On\nPower High\nSpeed 100\nAccel 100 100\nHome]:::proceso
+    CallPaletizado[Call Paletizado_01]:::proceso
+
+    SubPallet[Pallet 1 Origen PuntoX PuntoY 6x5]:::proceso
+    LoadRoutes[Call CargarRutas]:::proceso
+    ClearVars[Inicializar visited y visitedCount]:::proceso
+    InitPos[Inicializar curA y curB]:::proceso
+    MarkInit[Marcar posiciones iniciales]:::proceso
+
+    LoopStart{k hasta 30}:::decision
+
+    H1_Mark[Marcar curA]:::proceso
+    H1_Pick[Jump curA]:::proceso
+    H1_On[Activar vacio]:::io
+    H1_Place[Jump pathA k]:::proceso
+    H1_Off[Desactivar vacio]:::io
+    H1_Update[Actualizar curA]:::proceso
+
+    H2_Mark[Marcar curB]:::proceso
+    H2_Pick[Jump curB]:::proceso
+    H2_On[Activar vacio]:::io
+    H2_Place[Jump pathB k]:::proceso
+    H2_Off[Desactivar vacio]:::io
+    H2_Update[Actualizar curB]:::proceso
+
+    SafeStop[Off Out_9]:::io
+    GoHome2[Jump Origen y Home]:::proceso
+    EndNode([Fin]):::inicio
 
     Start --> InitSys
     InitSys --> CallPaletizado
@@ -303,26 +300,31 @@ flowchart TD
     ClearVars --> InitPos
     InitPos --> MarkInit
     MarkInit --> LoopStart
-    
-    LoopStart -- "k <= 30" --> H1_Mark
+
+    LoopStart --> H1_Mark
     H1_Mark --> H1_Pick
     H1_Pick --> H1_On
     H1_On --> H1_Place
     H1_Place --> H1_Off
     H1_Off --> H1_Update
-    
+
     H1_Update --> H2_Mark
     H2_Mark --> H2_Pick
     H2_Pick --> H2_On
     H2_On --> H2_Place
     H2_Place --> H2_Off
     H2_Off --> H2_Update
-    
+
     H2_Update --> LoopStart
-    
-    LoopStart -- "k > 30" --> SafeStop
+
+    LoopStart --> SafeStop
     SafeStop --> GoHome2
     GoHome2 --> EndNode
+
+    classDef inicio fill:#1A659E,color:#FFF
+    classDef proceso fill:#F7F9FA,color:#000
+    classDef decision fill:#E0FBFC,color:#000
+    classDef io fill:#FFF3CD,color:#000
 ```
 
 
